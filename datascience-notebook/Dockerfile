@@ -23,13 +23,20 @@ RUN apt-get update && \
 # LandSupport custom pre-requisites:
 RUN apt-get update && \
     apt-get -y install gdal-bin python3-gdal libpq-dev python3-psycopg2 libgdal-dev curl php-mbstring git unzip php php-pgsql php-xml php-mbstring php-zmq
-RUN pip install owslib psycopg2 numpy scipy sos sos-pbs sos-notebook matlab_kernel sos-r sos-matlab sos-python sos-bash bash_kernel
-RUN pip install GDAL==$(gdal-config --version) --global-option=build_ext --global-option="-I/usr/include/gdal"
-RUN python -m bash_kernel.install
 RUN curl -sS https://getcomposer.org/installer -o composer-setup.php
 RUN php composer-setup.php --install-dir=/usr/local/bin --filename=composer
 RUN curl -sS https://litipk.github.io/Jupyter-PHP-Installer/dist/jupyter-php-installer.phar -o jupyter-php-installer.phar
 RUN php jupyter-php-installer.phar install
+RUN apt-get -y install libbz2-dev
+
+USER $NB_UID
+RUN pip install GDAL==$(gdal-config --version) --global-option=build_ext --global-option="-I/usr/include/gdal"
+RUN pip install owslib psycopg2 numpy scipy
+RUN pip install sos sos-pbs sos-notebook sos-papermill matlab_kernel sos-r sos-matlab sos-python sos-bash bash_kernel
+RUN python -m sos.install
+
+USER root
+RUN python -m bash_kernel.install
 
 # Julia dependencies
 # install Julia packages in /opt/julia instead of $HOME
@@ -75,11 +82,17 @@ RUN conda install --quiet --yes \
     'r-rsqlite=2.2*' \
     'r-shiny=1.4*' \
     'r-tidyverse=1.3*' \
-    'rpy2=3.1*' \
-    && \
-    conda clean --all -f -y && \
+    'rpy2=3.1*'
+ #\
+#    && \
+
+USER root
+RUN conda clean --all -f -y && \
     fix-permissions $CONDA_DIR && \
     fix-permissions /home/$NB_USER
+
+#USER $NB_UID
+USER root
 
 # Add Julia packages. Only add HDF5 if this is not a test-only build since
 # it takes roughly half the entire build time of all of the images on Travis
@@ -94,5 +107,11 @@ RUN julia -e 'import Pkg; Pkg.update()' && \
     # move kernelspec out of home \
     mv $HOME/.local/share/jupyter/kernels/julia* $CONDA_DIR/share/jupyter/kernels/ && \
     chmod -R go+rx $CONDA_DIR/share/jupyter && \
-    rm -rf $HOME/.local && \
-    fix-permissions $JULIA_PKGDIR $CONDA_DIR/share/jupyter
+    rm -rf $HOME/.local
+ #&& \
+
+USER root
+RUN fix-permissions $JULIA_PKGDIR $CONDA_DIR/share/jupyter
+
+USER $NB_UID
+

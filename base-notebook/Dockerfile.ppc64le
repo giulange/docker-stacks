@@ -5,9 +5,12 @@
 FROM ppc64le/ubuntu:18.04
 
 LABEL maintainer="Ilsiyar Gaynutdinov <ilsiyar_gaynutdinov@ru.ibm.com>"
-ARG NB_USER="jovyan"
-ARG NB_UID="1000"
-ARG NB_GID="100"
+#ARG NB_USER="jovyan"
+#ARG NB_UID="1000"
+#ARG NB_GID="100"
+ARG NB_USER="release"
+ARG NB_UID="3007"
+ARG NB_GID="3003"
 
 USER root
 
