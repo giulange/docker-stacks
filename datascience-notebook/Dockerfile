@@ -19,6 +19,18 @@ RUN apt-get update && \
     gcc && \
     rm -rf /var/lib/apt/lists/*
 
+
+# LandSupport custom pre-requisites:
+RUN apt-get update && \
+    apt-get -y install gdal-bin python3-gdal libpq-dev python3-psycopg2 libgdal-dev curl php-mbstring git unzip php php-pgsql php-xml php-mbstring php-zmq
+RUN pip install owslib psycopg2 numpy scipy sos sos-pbs sos-notebook matlab_kernel sos-r sos-matlab sos-python sos-bash bash_kernel
+RUN pip install GDAL==$(gdal-config --version) --global-option=build_ext --global-option="-I/usr/include/gdal"
+RUN python -m bash_kernel.install
+RUN curl -sS https://getcomposer.org/installer -o composer-setup.php
+RUN php composer-setup.php --install-dir=/usr/local/bin --filename=composer
+RUN curl -sS https://litipk.github.io/Jupyter-PHP-Installer/dist/jupyter-php-installer.phar -o jupyter-php-installer.phar
+RUN php jupyter-php-installer.phar install
+
 # Julia dependencies
 # install Julia packages in /opt/julia instead of $HOME
 ENV JULIA_DEPOT_PATH=/opt/julia
