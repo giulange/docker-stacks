@@ -16,6 +16,8 @@ ARG NB_USER="release"
 ARG NB_UID="3007"
 ARG NB_GID="3003"
 
+CMD echo "Giuliano :: NB_USER = $NB_USER"
+
 USER root
 
 # Install all OS dependencies for notebook server that starts but lacks all
@@ -102,9 +104,13 @@ RUN cd /tmp && \
 # Install Tini
 RUN conda install --quiet --yes 'tini=0.18.0' && \
     conda list tini | grep tini | tr -s ' ' | cut -d ' ' -f 1,2 >> $CONDA_DIR/conda-meta/pinned && \
-    conda clean --all -f -y && \
-    fix-permissions $CONDA_DIR && \
+    conda clean --all -f -y
+# && \
+
+USER root
+RUN fix-permissions $CONDA_DIR && \
     fix-permissions /home/$NB_USER
+USER $NB_UID
 
 # Install Jupyter Notebook, Lab, and Hub
 # Generate a notebook server config
@@ -120,9 +126,13 @@ RUN conda install --quiet --yes \
     npm cache clean --force && \
     jupyter notebook --generate-config && \
     rm -rf $CONDA_DIR/share/jupyter/lab/staging && \
-    rm -rf /home/$NB_USER/.cache/yarn && \
-    fix-permissions $CONDA_DIR && \
+    rm -rf /home/$NB_USER/.cache/yarn
+ #&& \
+
+USER root
+RUN fix-permissions $CONDA_DIR && \
     fix-permissions /home/$NB_USER
+USER $NB_UID
 
 EXPOSE 8888
 
