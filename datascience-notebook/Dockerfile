@@ -43,6 +43,9 @@ RUN mkdir /etc/julia && \
 
 USER $NB_UID
 
+RUN echo "Giuliano :: NB_UID = $NB_UID"
+RUN echo "Giuliano :: HOME   = $HOME"
+
 # R packages including IRKernel which gets installed globally.
 RUN conda install --quiet --yes \
     'r-base=3.6.3' \
