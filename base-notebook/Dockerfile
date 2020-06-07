@@ -9,9 +9,12 @@ ARG BASE_CONTAINER=$ROOT_CONTAINER
 FROM $BASE_CONTAINER
 
 LABEL maintainer="Jupyter Project <jupyter@googlegroups.com>"
-ARG NB_USER="jovyan"
-ARG NB_UID="1000"
-ARG NB_GID="100"
+#ARG NB_USER="jovyan"
+#ARG NB_UID="1000"
+#ARG NB_GID="100"
+ARG NB_USER="release"
+ARG NB_UID="3007"
+ARG NB_GID="3003"
 
 USER root
 
