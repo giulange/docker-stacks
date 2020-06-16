@@ -14,7 +14,7 @@ LABEL maintainer="Jupyter Project <jupyter@googlegroups.com>"
 #ARG NB_GID="100"
 ARG NB_USER="release"
 ARG NB_UID="3007"
-ARG NB_GID="3003"
+ARG NB_GID="3007"
 
 CMD echo "Giuliano :: NB_USER = $NB_USER"
 
