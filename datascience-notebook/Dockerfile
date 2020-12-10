@@ -66,7 +66,7 @@ RUN conda install --quiet --yes \
     'r-rsqlite=2.2*' \
     'r-shiny=1.4*' \
     'r-tidyverse=1.3*' \
-    'rpy2=3.1*'
+    'rpy2=3.1*' 
  #\
 #    && \
 
@@ -74,7 +74,16 @@ RUN conda install --quiet --yes \
 RUN conda install --quiet --yes -c r \
     'r-raster' \
     'r-sp'
+# USER root
+# RUN apt-get install -y libfreetype6-dev # this does not work!
 
+USER $NB_UID
+# https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&cad=rja&uact=8&ved=2ahUKEwjQ746Kh5jqAhWARxUIHYf9CToQFjAAegQIARAB&url=https%3A%2F%2Ftechoverflow.net%2F2019%2F06%2F11%2Fhow-to-fix-ft2build-h-no-such-file-or-directory%2F&usg=AOvVaw3QuaoknRY9ehLgQGr4oLwy
+#RUN R -e "install.packages('systemfonts',configure.args='-I=/usr/include/freetype2')" # this does not work!
+#RUN R -e "install.packages('rgdal',dependencies=TRUE, repos='http://cran.rstudio.com/')"
+#RUN R -e "install.packages('raster',dependencies=TRUE, repos='http://cran.rstudio.com/')"
+#RUN R -e "install.packages('sp',dependencies=TRUE, repos='http://cran.rstudio.com/')"
+#RUN R -e "install.packages('sf',dependencies=TRUE, repos='http://cran.rstudio.com/')"
 
 USER root
 RUN conda clean --all -f -y && \
