@@ -120,6 +120,12 @@ RUN python -m sos_notebook.install
 #RUN curl -sS https://litipk.github.io/Jupyter-PHP-Installer/dist/jupyter-php-installer.phar -o jupyter-php-installer.phar
 #RUN php jupyter-php-installer.phar install
 
+USER $NB_UID
+RUN conda install -y -c conda-forge wgrib
+RUN conda install -y -c conda-forge wgrib2
+
+USER root
+
 EXPOSE 80
 #CMD apachectl -D FOREGROUND
 
