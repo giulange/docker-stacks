@@ -71,9 +71,9 @@ RUN conda install --quiet --yes \
 #    && \
 
 # R packages for dynamic "report" generation
-RUN conda install --quiet --yes -c r \
-    'r-raster' \
-    'r-sp'
+#RUN conda install --quiet --yes -c r \
+#    'r-raster' \
+#    'r-sp'
 # USER root
 # RUN apt-get install -y libfreetype6-dev # this does not work!
 
