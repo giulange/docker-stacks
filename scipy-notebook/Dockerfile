@@ -7,10 +7,10 @@ LABEL maintainer="Jupyter Project <jupyter@googlegroups.com>"
 
 USER root
 
-# ffmpeg for matplotlib anim & dvipng for latex labels
+# ffmpeg for matplotlib anim & dvipng+cm-super for latex labels
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends ffmpeg dvipng && \
-    rm -rf /var/lib/apt/lists/*
+    apt-get install -y --no-install-recommends ffmpeg dvipng cm-super && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
 
 USER $NB_UID
 
@@ -18,31 +18,29 @@ USER $NB_UID
 RUN conda install --quiet --yes \
     'beautifulsoup4=4.9.*' \
     'conda-forge::blas=*=openblas' \
-    'bokeh=2.0.*' \
+    'bokeh=2.2.*' \
     'bottleneck=1.3.*' \
-    'cloudpickle=1.4.*' \
+    'cloudpickle=1.6.*' \
     'cython=0.29.*' \
-    'dask=2.15.*' \
+    'dask=2020.12.*' \
     'dill=0.3.*' \
-    'h5py=2.10.*' \
-    'hdf5=1.10.*' \
-    'ipywidgets=7.5.*' \
+    'h5py=3.1.*' \
+    'ipywidgets=7.6.*' \
     'ipympl=0.5.*'\
-    'matplotlib-base=3.2.*' \
-    # numba update to 0.49 fails resolving deps.
-    'numba=0.48.*' \
+    'matplotlib-base=3.3.*' \
+    'numba=0.52.*' \
     'numexpr=2.7.*' \
-    'pandas=1.0.*' \
+    'pandas=1.1.*' \
     'patsy=0.5.*' \
-    'protobuf=3.11.*' \
+    'protobuf=3.14.*' \
     'pytables=3.6.*' \
-    'scikit-image=0.16.*' \
-    'scikit-learn=0.22.*' \
-    'scipy=1.4.*' \
-    'seaborn=0.10.*' \
+    'scikit-image=0.18.*' \
+    'scikit-learn=0.24.*' \
+    'scipy=1.5.*' \
+    'seaborn=0.11.*' \
     'sqlalchemy=1.3.*' \
-    'statsmodels=0.11.*' \
-    'sympy=1.5.*' \
+    'statsmodels=0.12.*' \
+    'sympy=1.7.*' \
     'vincent=0.4.*' \
     'widgetsnbextension=3.5.*'\
     'xlrd=1.2.*' \
@@ -91,3 +89,5 @@ USER root
 RUN fix-permissions /home/$NB_USER
 
 USER $NB_UID
+
+WORKDIR $HOME
