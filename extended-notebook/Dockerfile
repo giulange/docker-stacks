@@ -8,7 +8,7 @@
 
 
 #ARG BASE_CONTAINER=jupyter
-FROM jupyter 
+FROM jupyter/datascience-notebook
 
 LABEL maintainer="Giuliano Langella <glangella@unina.it>"
 
