@@ -130,6 +130,8 @@ RUN pip install owslib psycopg2 numpy scipy sos sos-pbs sos-notebook matlab_kern
 
 RUN pip install GDAL==$(gdal-config --version) --global-option=build_ext --global-option="-I/usr/include/gdal"
 
+RUN pip install prettytable # to create pretty tables in python
+
 RUN python -m bash_kernel.install
 RUN python -m sos.install
 RUN python -m sos_notebook.install
